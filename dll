@@ -1,0 +1,114 @@
+#include <iostream>
+#include <memory>
+
+struct Node {
+    int data;
+    std::shared_ptr<Node> previous;
+    std::shared_ptr<Node> next;
+
+    Node(int x) : data(x), previous(nullptr), next(nullptr){}
+};
+
+struct DoublyLinkedList{
+    std::shared_ptr<Node> head;
+    std::shared_ptr<Node> tail;
+
+    std::shared_ptr<Node> makeNode(int x){
+    return std::make_shared<Node>(x);
+    }
+
+    void pushFront(int x){
+    std::shared_ptr<Node> n = makeNode(x);
+    if(!head){
+    head = n;
+    tail = head;
+    }
+    else{
+    head->previous = n;
+    n->next = head;
+    head = n;
+    }
+    }
+
+    void pushBack(int x){
+    auto n = makeNode(x);
+    if(!head){
+    tail = n;
+    head = tail;
+    }
+    else{
+    tail->next = n;
+    n->previous = tail;
+    tail = n;
+    }
+    }
+
+    int getNodeAt(int pos){
+        auto temp = head;
+        for (int i = 1; i<pos; i++){
+        if(temp){
+        temp = temp->next;
+        }
+    }
+    std::cout << temp->data<< "\n";
+
+    }
+
+    int popBack(){
+        int temp = tail->data;
+        tail = tail->previous;
+        tail -> next = nullptr;
+        return temp;
+    }
+
+    int popFront(){
+        int temp = head->data;
+        head = head->next;
+        head -> previous = nullptr;
+        return temp;
+    }
+
+
+    void printList(){
+        auto temp = head;
+        while(temp){
+        std::cout << temp->data<< "\n";
+        temp = temp->next;
+        }
+    }
+    void reversePrintList(){
+        auto temp = tail;
+        while(temp){
+        std::cout << temp->data<< "\n";
+        temp = temp->previous;
+        }
+    }
+};
+
+
+
+
+int main(){
+    DoublyLinkedList list1;
+    list1.pushFront(5);
+    list1.pushFront(1);
+    list1.pushFront(3);
+    list1.pushFront(6);
+    list1.pushFront(7);
+    list1.pushFront(8);
+    list1.pushFront(9);
+    list1.pushBack(2);
+    list1.printList();
+    std::cout << "\n";
+    list1.getNodeAt(5);
+    std::cout << "\n";
+    list1.reversePrintList();
+    std::cout << "\n";
+    std::cout << list1.popBack() << "\n";
+    std::cout << list1.popBack() << "\n";
+    std::cout << list1.popBack() << "\n";
+    std::cout << list1.popBack() << "\n";
+    std::cout << "\n";
+    list1.printList();
+return 0;
+}
