@@ -1,6 +1,6 @@
 
 //Rijndael substitution box
-unsigned char sbox[256] =
+const uint8_t sbox[256] =
  {0x63 ,0x7c ,0x77 ,0x7b ,0xf2 ,0x6b ,0x6f ,0xc5 ,0x30 ,0x01 ,0x67 ,0x2b ,0xfe ,0xd7 ,0xab ,0x76
  ,0xca ,0x82 ,0xc9 ,0x7d ,0xfa ,0x59 ,0x47 ,0xf0 ,0xad ,0xd4 ,0xa2 ,0xaf ,0x9c ,0xa4 ,0x72 ,0xc0
  ,0xb7 ,0xfd ,0x93 ,0x26 ,0x36 ,0x3f ,0xf7 ,0xcc ,0x34 ,0xa5 ,0xe5 ,0xf1 ,0x71 ,0xd8 ,0x31 ,0x15
@@ -20,18 +20,36 @@ unsigned char sbox[256] =
 
 
 void Encrypt(){}
+void shiftRows(int (&state)[16][16],){
+    int temp;
+    for (int i = 0; i<16; i++){
+ 
 
+
+}
+void shiftColums(int (&state)[16][16]){}
+void circularShift(){}
+
+
+void convertToMatrix(){}
 
 int main(){
 
 std::string key, input;
 int ak, ai;
-int ans[input.size()];
+int ans[256];
+int matrix[16][16];
 
 std::cout << "ENTER TEXT\n";
 std::cin >> input;
 std::cout << "ENTER KEY\n";
 std::cin >> key;
+
+
+//padding
+while(input.size()<256){
+    input+= " ";
+}
 
 int isize = input.size();
 int ksize = key.size();
@@ -48,20 +66,34 @@ for(int i = 0; i<isize; i++){
         ak = (int)key[i];
     }
     else{
-        ak = 48;
+        ak = abs(48-i);
     }
     ans[i] = (ai ^ ak);
-    std:: cout << ans[i] << "\n";
 }
 
 
-for (auto& a : ans){
-    std:: cout << a << "\n";
-}
+
 
 // Assign value from sbox
 for(int i = 0; i<isize;i++){
-    std::cout << sbox[ans[i]] << "\n";
+    ans[i] = sbox[ans[i]];
 }
 
+int i = 0;
+for(int row = 0; row<16; row++){
+    for (int col = 0; col<16;col++){
+        matrix[row][col] = ans[i];
+        i++;
+    }
+}
+
+for(int row = 0; row<16; row++){
+    for (int col = 0; col<16;col++){
+        std::cout << matrix[row][col]<< "\n";
+    }
+}
+shiftRows(matrix);
+
+
+return 0;
 }
